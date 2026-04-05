@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ATEAM FOODS - Chả Protein Thực Vật (NEW)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Thêm thư viện tạo QR -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<!-- Nút và vùng hiển thị QR -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 2000;">
+    <button onclick="toggleQR()" style="background: var(--primary); color: white; border: none; border-radius: 50px; padding: 12px 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        📱 Mã QR
+    </button>
+    <div id="qrPopup" style="display: none; position: absolute; bottom: 60px; right: 0; background: white; padding: 15px; border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+        <div id="qrcode"></div>
+        <p style="font-size: 12px; text-align: center; margin-top: 8px;">Quét mã để mở trang</p>
+    </div>
+</div>
+
+<script>
+    function toggleQR() {
+        const popup = document.getElementById('qrPopup');
+        if (popup.style.display === 'none' || !popup.style.display) {
+            // Tạo QR code nếu chưa có
+            if (!document.getElementById('qrcode').innerHTML) {
+                new QRCode(document.getElementById('qrcode'), {
+                    text: window.location.href,
+                    width: 150,
+                    height: 150,
+                    colorDark: '#2b7a3e',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+            popup.style.display = 'block';
+        } else {
+            popup.style.display = 'none';
+        }
+    }
+</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2b7a3e;
+            --primary-dark: #1b5e2a;
+            --primary-light: #e8f5e9;
+            --accent: #f9a825;
+            --dark: #1a2e2c;
+            --gray: #5a6e6a;
+            --gray-light: #f5f7f5;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.5;
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .logo, .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(43,122,62,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 6%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--primary);
+        }
+
+        .nav-menu a.active {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .icon-btn:hover {
+            color: var(--primary);
+        }
+
+        .cart-badge {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: var(--accent);
+            color: var(--dark);
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 30px;
+            padding: 2px 6px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            padding: 120px 6% 80px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.8rem;
+            line-height: 1.2;
+            margin: 15px 0;
+        }
+
+        .main-product-img {
+            background: linear-gradient(135deg, var(--primary-light), #d4e8d9);
+            border-radius: 50px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .floating-badge {
+            position: absolute;
+            top: -20px;
+            right: 10px;
+            background: var(--accent);
+            padding: 15px 18px;
+            border-radius: 28px;
+            text-align: center;
+            font-weight: 800;
+            animation: bounce 2s infinite;
+            color: var(--dark);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        @keyframes bounce {
+            0%,100%{ transform: translateY(0); }
+            50%{ transform: translateY(-8px); }
+        }
+
+        /* Offers */
+        .offers-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 45px;
+            padding: 45px 40px;
+            color: white;
+            margin: 50px 0;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .offer-card {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .offer-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Product */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .nutrition-card {
+            background: var(--gray-light);
+            border-radius: 28px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .nutrition-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .feature-badges {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Recipes */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 35px;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #eef2f0;
+            transition: var(--transition);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+        }
+
+        .recipe-img {
+            height: 200px;
+            background: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: #eef2e8;
+        }
+
+        .recipe-content {
+            padding: 25px;
+        }
+
+        .step-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .step-list li {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .step-num {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Story */
+        .story-wrapper {
+            background: var(--gray-light);
+            border-radius: 45px;
+            padding: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        /* Contact */
+        .contact-wrapper {
+            background: var(--primary-dark);
+            border-radius: 45px;
+            padding: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 45px;
+            color: white;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 35px;
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            padding: 12px 16px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+        }
+
+        /* Policy Page */
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .policy-card {
+            background: var(--gray-light);
+            border-radius: 28px;
+            padding: 30px;
+            transition: var(--transition);
+            border: 1px solid #e0e8e0;
+        }
+
+        .policy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .policy-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a1f1c;
+            color: #d4ece4;
+            margin-top: 50px;
+        }
+
+        .footer-main {
+            padding: 40px 6% 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            color: #ffd966;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            list-style: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .footer-col li:hover {
+            opacity: 1;
+            color: #ffd966;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background: #ffd966;
+            color: #0a1f1c;
+        }
+
+        .footer-bottom {
+            padding: 18px 6%;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        /* Modal & Cart */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 28px;
+            width: 340px;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 380px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            z-index: 1100;
+            padding: 25px;
+            transform: translateX(100%);
+            transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-drawer.open {
+            transform: translateX(0);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-section, .product-grid, .story-wrapper, .contact-wrapper, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-text h1 { font-size: 2.8rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .cart-drawer { width: 100%; }
+            .offers-section { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:20px;">Đăng nhập / Đăng ký</h3>
+        <input id="username" placeholder="Email / Số điện thoại" style="width:100%; padding:12px; margin-bottom:12px; border-radius:20px; border:1px solid #ddd;">
+        <input id="password" type="password" placeholder="Mật khẩu" style="width:100%; padding:12px; margin-bottom:20px; border-radius:20px; border:1px solid #ddd;">
+        <button onclick="handleLogin()" class="btn-primary" style="width:100%; justify-content:center;">Đăng nhập</button>
+        <button onclick="handleRegister()" style="width:100%; margin-top:10px; padding:10px; background:#f0f0f0; border:none; border-radius:20px; cursor:pointer; font-weight:500;">Đăng ký thành viên mới</button>
+        <button onclick="closeLogin()" style="margin-top:12px; background:none; border:none; cursor:pointer; color:gray;">Đóng</button>
+    </div>
+</div>
+
+<!-- Cart Drawer -->
+<div id="cartDrawer" class="cart-drawer">
+    <div style="display:flex; justify-content:space-between; margin-bottom:25px;">
+        <h3 style="font-size:1.5rem;">🛒 Giỏ hàng</h3>
+        <span onclick="toggleCart()" style="cursor:pointer; font-size:28px; line-height:1;">&times;</span>
+    </div>
+    <div id="cartItems" style="flex:1; overflow-y:auto; padding-right:6px;"></div>
+    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:18px;">
+        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin-bottom:20px;">
+            <span>Tổng cộng:</span><span id="cartTotalAmount" style="color:var(--primary);">0đ</span>
+        </div>
+        <button onclick="checkout()" class="btn-primary" style="width:100%; justify-content:center;">Thanh toán ngay</button>
+        <button onclick="toggleCart()" style="width:100%; margin-top:10px; background:#f5f5f5; border:none; border-radius:40px; padding:12px; cursor:pointer;">Tiếp tục mua sắm</button>
+    </div>
+</div>
+
+<header>
+    <div class="nav-container">
+        <div class="logo" onclick="showPage('home')"><i data-lucide="leaf"></i> ATEAM FOODS</div>
+        <ul class="nav-menu">
+            <li><a onclick="showPage('home')" id="nav-home" class="active">Trang chủ</a></li>
+            <li><a onclick="showPage('product')" id="nav-product">Sản phẩm</a></li>
+            <li><a onclick="showPage('recipes')" id="nav-recipes">Công thức món ngon</a></li>
+            <li><a onclick="showPage('story')" id="nav-story">Câu chuyện của chúng tôi</a></li>
+            <li><a onclick="showPage('policy')" id="nav-policy">Chính sách đổi trả</a></li>
+            <li><a onclick="showPage('contact')" id="nav-contact">Liên hệ</a></li>
+        </ul>
+        <div class="header-actions">
+            <i data-lucide="search" class="icon-btn" size="20"></i>
+            <div class="cart-badge" onclick="toggleCart()">
+                <i data-lucide="shopping-bag" size="20"></i>
+                <span id="cartCount" class="cart-count">0</span>
+            </div>
+            <i data-lucide="user" class="icon-btn" onclick="openLogin()" size="20"></i>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- Home -->
+    <div id="home" class="page active">
+        <div class="hero-section">
+            <div class="hero-text">
+                <span style="color:var(--primary); font-weight:700;">🌿THUẦN THỰC VẬT - GIÀU PROTEIN</span>
+                <h1>Chả Protein <br>Thực Vật <span style="color:var(--accent);">ATEAM</span></h1>
+                <p>Không hàn the - Không Cholesterol - 20g đạm/100g. Giải pháp dinh dưỡng sạch cho người Việt.</p>
+                <button class="btn-primary" onclick="showPage('product')">Mua ngay <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="main-product-img">
+                <div style="font-size:1.6rem; font-weight:bold;">🍃 Chả Protein thực vật<br>New 500g</div>
+                <div class="floating-badge"><span style="font-size:1.4rem;">20g</span><br>Protein</div>
+            </div>
+        </div>
+        <div class="offers-section">
+            <h2 style="font-size:2rem;">🎁 Ưu đãi đặc biệt</h2>
+            <p>Đăng ký thành viên nhận ngay quà tặng & ưu đãi</p>
+            <div class="offers-grid">
+                <div class="offer-card"><i data-lucide="gift" size="34"></i><h4>Giảm 10%</h4><p>Đơn hàng đầu</p></div>
+                <div class="offer-card"><i data-lucide="truck" size="34"></i><h4>Free ship</h4><p>Đơn từ 299k</p></div>
+                <div class="offer-card"><i data-lucide="book-open" size="34"></i><h4>Ebook 30+ công thức</h4><p>Tặng kèm</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product -->
+    <div id="product" class="page">
+        <div class="product-grid">
+            <div>
+                <div style="background:var(--gray-light); border-radius:45px; padding:50px; text-align:center; font-size:1.4rem; font-weight:bold; box-shadow: var(--shadow-sm);">🍃 Chả Protein ATEAM 500g <br> <span style="font-size:0.9rem; font-weight:normal;">Thơm dai, đậm vị tự nhiên</span></div>
+                <div class="feature-badges">
+                    <div class="feature-item">✅ KHÔNG HÀN THE</div>
+                    <div class="feature-item">✅ KHÔNG CHOLESTEROL</div>
+                    <div class="feature-item">✅ Non-GMO</div>
+                    <div class="feature-item">✅ Thuần thực vật</div>
+                </div>
+            </div>
+            <div>
+                <h2 style="font-size:2.5rem;">Chả Protein<br>Thực Vật</h2>
+                <p style="margin:20px 0; color:var(--gray);">Từ tàu hũ ky, nấm đông cô, rong biển – dai ngon tự nhiên, giàu dinh dưỡng.</p>
+                <div class="nutrition-card">
+                    <h4 style="margin-bottom:12px;">📊 Dinh dưỡng (100g)</h4>
+                    <div class="nutrition-row"><span>Năng lượng</span><b>174 Kcal</b></div>
+                    <div class="nutrition-row"><span>Protein</span><b>20g</b></div>
+                    <div class="nutrition-row"><span>Chất béo</span><b>7.4g</b></div>
+                    <div class="nutrition-row"><span>Chất xơ</span><b>3.5g</b></div>
+                </div>
+                <div style="margin-top:25px;">
+                    <span style="font-size:2rem; font-weight:800; color:var(--primary);">95.000đ</span><span style="margin-left:8px;">/ 500g</span>
+                    <button class="btn-primary" onclick="addToCart()" style="margin-top:15px; width:100%;">➕ Thêm vào giỏ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes -->
+    <div id="recipes" class="page">
+        <div style="text-align:center; margin-bottom:40px;"><h2 style="font-size:2.8rem;">🍳 Món ngon mỗi ngày</h2><p>Biến tấu cùng Chả Protein thực vật</p></div>
+        <div class="recipe-grid">
+            <div class="recipe-card"><div class="recipe-img">🍲 Chả sốt cay</div><div class="recipe-content"><h3>Chả áp chảo sốt ớt</h3><ul class="step-list"><li><span class="step-num">1</span> Thái lát, áp chảo vàng giòn</li><li><span class="step-num">2</span> Pha sốt: tương ớt, đường, tỏi</li><li><span class="step-num">3</span> Rim lửa nhỏ đến sệt, rắc tiêu</li></ul></div></div>
+            <div class="recipe-card"><div class="recipe-img">🌯 Cuốn chả rau củ</div><div class="recipe-content"><h3>Cuốn chả protein</h3><ul class="step-list"><li><span class="step-num">1</span> Cắt chả hạt lựu, xào sơ</li><li><span class="step-num">2</span> Cuốn bánh tráng + rau sống + bún</li><li><span class="step-num">3</span> Chấm nước tương bơ đậu phộng</li></ul></div></div>
+            <div class="recipe-card"><div class="recipe-img">🥗 Salad chả thực vật</div><div class="recipe-content"><h3>Salad thanh nhiệt</h3><ul class="step-list"><li><span class="step-num">1</span> Chả cắt sợi, chiên giòn</li><li><span class="step-num">2</span> Trộn xà lách, cà chua, dưa leo</li><li><span class="step-num">3</span> Rưới sốt mè rang</li></ul></div></div>
+        </div>
+    </div>
+
+    <!-- Story -->
+    <div id="story" class="page">
+        <div class="story-wrapper">
+            <div style="background:#d4e8d9; height:280px; border-radius:35px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:bold;">🌾 Nguyên liệu sạch - Hữu cơ</div>
+            <div><h2 style="font-size:2.2rem;">Hành trình ATEAM</h2><p style="margin:20px 0;">Chả protein thực vật ra đời từ tình yêu ẩm thực lành mạnh. Chúng tôi cam kết không chất bảo quản độc hại, không hàn the, giữ trọn vị tự nhiên.</p><div style="display:flex; gap:35px; margin-top:20px;"><div><span style="font-size:1.8rem; font-weight:800;">100%</span><div>Thuần thực vật</div></div><div><span style="font-size:1.8rem; font-weight:800;">0%</span><div>Hàn the</div></div></div></div>
+        </div>
+    </div>
+
+    <!-- POLICY PAGE - CHÍNH SÁCH & LIÊN HỆ RIÊNG -->
+    <div id="policy" class="page">
+        <div style="text-align:center; margin-bottom:50px;">
+            <h2 style="font-size:2.5rem;">📋 Chính sách & Quy định</h2>
+            <p>ATEAM FOODS cam kết mang đến trải nghiệm tốt nhất cho khách hàng</p>
+        </div>
+        <div class="policy-grid">
+            <div class="policy-card"><h3><i data-lucide="refresh-cw" size="22"></i> Chính sách đổi trả</h3><p>▪️ Đổi trả trong vòng 30 ngày kể từ ngày nhận hàng.<br>▪️ Sản phẩm lỗi nhà sản xuất, bể vỡ trong vận chuyển.<br>▪️ Hoàn tiền 100% hoặc đổi sản phẩm mới.</p><div class="contact-ref" style="margin-top:12px; color:var(--primary);">📞 Liên hệ: 0828 076 069</div></div>
+            <div class="policy-card"><h3><i data-lucide="truck" size="22"></i> Chính sách giao hàng</h3><p>▪️ Miễn phí vận chuyển đơn hàng từ 299.000đ.<br>▪️ Giao hàng 2-5 ngày trên toàn quốc.<br>▪️ Hỗ trợ kiểm tra hàng trước khi nhận.</p><div class="contact-ref" style="margin-top:12px;">🚚 Giao nhanh nội thành Đà Nẵng</div></div>
+            <div class="policy-card"><h3><i data-lucide="shield" size="22"></i> Chính sách bảo mật</h3><p>▪️ Cam kết bảo mật tuyệt đối thông tin khách hàng.<br>▪️ Chỉ sử dụng cho mục đích đơn hàng và CSKH.<br>▪️ Không chia sẻ dữ liệu với bên thứ ba.</p><div class="contact-ref" style="margin-top:12px;">🔒 An toàn & uy tín</div></div>
+            <div class="policy-card"><h3><i data-lucide="star" size="22"></i> Chính sách hội viên</h3><p>▪️ Tích điểm 5% giá trị đơn hàng.<br>▪️ Tặng voucher sinh nhật 50.000đ.<br>▪️ Ưu đãi đặc biệt hàng tháng cho hội viên.</p><div class="contact-ref" style="margin-top:12px;">⭐ Đăng ký ngay để nhận ưu đãi</div></div>
+            <div class="policy-card"><h3><i data-lucide="credit-card" size="22"></i> Chính sách thanh toán</h3><p>▪️ Thanh toán khi nhận hàng (COD).<br>▪️ Chuyển khoản ngân hàng.<br>▪️ Thanh toán qua VNPay, Momo, thẻ tín dụng.</p><div class="contact-ref" style="margin-top:12px;">💳 Nhiều phương thức linh hoạt</div></div>
+            <div class="policy-card"><h3><i data-lucide="headphones" size="22"></i> Hỗ trợ khách hàng</h3><p>▪️ Hotline: 0828 076 069 (8h00 - 21h00)<br>▪️ Email: ateam@food.com.vn<br>▪️ Chat trực tiếp trên website</p><div class="contact-ref" style="margin-top:12px;">💬 Giải đáp thắc mắc nhanh chóng</div></div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div id="contact" class="page">
+        <div class="contact-wrapper">
+            <div><h2 style="font-size:2rem;">Đồng hành cùng ATEAM</h2><p>Nhận voucher 50.000đ và quà tặng khi đăng ký nhận tin</p><div style="margin-top:25px;"><div>📞 0828 076 069</div><div>✉️ ateam@food.com.vn</div><div>📍 100 Nguyễn Lương Bằng, Đà Nẵng</div></div></div>
+            <div class="contact-form"><input id="contactName" placeholder="Họ tên" required><input id="contactPhone" placeholder="Số điện thoại" required><textarea id="contactMsg" rows="3" placeholder="Lời nhắn (nếu có)"></textarea><button onclick="submitContact()" class="btn-primary">Đăng ký ngay</button></div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-main">
+        <div class="footer-grid">
+            <div class="footer-col"><h4>🌱 ATEAM FOODS</h4><p>Tiên phong thực phẩm protein thực vật sạch, lành, bền vững.</p><div class="social-links"><div class="social-icon"><i data-lucide="facebook" size="16"></i></div><div class="social-icon"><i data-lucide="instagram" size="16"></i></div><div class="social-icon"><i data-lucide="youtube" size="16"></i></div></div></div>
+            <div class="footer-col"><h4>📌 Liên kết</h4><ul><li onclick="showPage('product')">Sản phẩm</li><li onclick="showPage('recipes')">Công thức món ngon</li><li onclick="showPage('policy')">Chính sách đổi trả</li><li onclick="showPage('contact')">Liên hệ</li></ul></div>
+            <div class="footer-col"><h4>💬 Thông tin</h4><p>📞 0828 076 069</p><p>✉️ ateam@food.com.vn</p><p>www.ateam.com.vn</p><p>📍 100 Nguyễn Lương Bằng, Đà Nẵng</p></div>
+        </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 ATEAM FOODS "Ăn sạch - Sống nhiệt - Đậm vị thiên nhiên"</p></div>
+</footer>
+
+<script>
+    let cart = [];
+    lucide.createIcons();
+
+    function updateCartUI() {
+        const container = document.getElementById('cartItems');
+        const totalSpan = document.getElementById('cartTotalAmount');
+        const countSpan = document.getElementById('cartCount');
+        const total = cart.reduce((sum, i) => sum + i.quantity * 95000, 0);
+        if (container) {
+            if (cart.length === 0) container.innerHTML = '<div style="text-align:center; padding:30px;">🛍️ Giỏ hàng trống<br><span style="font-size:12px;">Thêm sản phẩm ngay!</span></div>';
+            else {
+                container.innerHTML = cart.map((item, idx) => `
+                    <div class="cart-item">
+                        <div><strong>🍃 Chả Protein ATEAM</strong><br>${item.quantity} x 95.000đ</div>
+                        <button onclick="removeItem(${idx})" style="background:#fee2e2; border:none; border-radius:30px; padding:6px 12px; cursor:pointer; color:#c0392b;">Xóa</button>
+                    </div>
+                `).join('');
+            }
+        }
+        if (totalSpan) totalSpan.innerText = total.toLocaleString() + 'đ';
+        if (countSpan) countSpan.innerText = cart.reduce((s,i)=> s+i.quantity, 0);
+    }
+
+    function addToCart() {
+        const exist = cart.find(i => i.id === 'protein');
+        if (exist) exist.quantity++;
+        else cart.push({ id: 'protein', name: 'Chả Protein', price: 95000, quantity: 1 });
+        updateCartUI();
+        const toast = document.createElement('div');
+        toast.innerText = '✅ Đã thêm Chả Protein vào giỏ hàng!';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '20px';
+        toast.style.left = '20px';
+        toast.style.background = 'var(--primary)';
+        toast.style.color = 'white';
+        toast.style.padding = '12px 20px';
+        toast.style.borderRadius = '40px';
+        toast.style.zIndex = '1300';
+        toast.style.fontWeight = '500';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+
+    function removeItem(idx) { cart.splice(idx,1); updateCartUI(); }
+    function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); }
+    function checkout() { 
+        if(cart.length===0) alert('🛒 Giỏ hàng trống! Vui lòng thêm sản phẩm.');
+        else { 
+            alert('📦 Cảm ơn bạn! Chúng tôi sẽ liên hệ xác nhận đơn hàng trong ít phút.'); 
+            cart = []; 
+            updateCartUI(); 
+            toggleCart(); 
+        } 
+    }
+    function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
+    function handleLogin() { 
+        let u = document.getElementById('username').value.trim(); 
+        if(u) { alert(`👋 Chào ${u}, đăng nhập thành công! Bạn sẽ nhận được nhiều ưu đãi.`); closeLogin(); } 
+        else alert('Vui lòng nhập email hoặc số điện thoại'); 
+    }
+    function handleRegister() { alert('📝 Đăng ký thành viên: Liên hệ hotline 0828 076 069 hoặc inbox fanpage để nhận ngay voucher 50k và ưu đãi hội viên.'); }
+    function submitContact() { 
+        let name = document.getElementById('contactName')?.value.trim(); 
+        let phone = document.getElementById('contactPhone')?.value.trim();
+        if(name && phone) { alert(`🎉 Cảm ơn ${name}, chúng tôi đã nhận thông tin. Ưu đãi sẽ được gửi qua SMS tới ${phone} trong 24h!`); 
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactMsg').value = '';
+        } else alert('Vui lòng nhập đầy đủ họ tên và số điện thoại'); 
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const activePage = document.getElementById(pageId);
+        if (activePage) activePage.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelectorAll('.nav-menu a').forEach(link => link.classList.remove('active'));
+        const activeNav = document.getElementById(`nav-${pageId}`);
+        if (activeNav) activeNav.classList.add('active');
+        setTimeout(() => lucide.createIcons(), 50);
+    }
+
+    // Close cart if click outside (optional basic)
+    document.addEventListener('click', function(e) {
+        const cart = document.getElementById('cartDrawer');
+        const cartBtn = document.querySelector('.cart-badge');
+        if(cart.classList.contains('open') && !cart.contains(e.target) && !cartBtn?.contains(e.target)) {
+            cart.classList.remove('open');
+        }
+    });
+
+    window.addToCart = addToCart;
+    window.removeItem = removeItem;
+    window.toggleCart = toggleCart;
+    window.checkout = checkout;
+    window.openLogin = openLogin;
+    window.closeLogin = closeLogin;
+    window.handleLogin = handleLogin;
+    window.handleRegister = handleRegister;
+    window.submitContact = submitContact;
+    window.showPage = showPage;
+    lucide.createIcons();
+</script>
+</body>
+</html>
